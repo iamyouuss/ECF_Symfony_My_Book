@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\AuthorRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,10 +46,14 @@ class UserController extends AbstractController
     // }
 
     #[Route('/{id}/show', name: 'show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, AuthorRepository $authorRepo): Response
     {
+        $user = $this->getUser();
+        $myAuthors = $authorRepo->myAuthors($user);
+        
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'myAuthors' => $myAuthors
         ]);
     }
 
