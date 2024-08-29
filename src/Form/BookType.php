@@ -22,7 +22,10 @@ class BookType extends AbstractType
             ->add('description')
             ->add('author', EntityType::class, [
                 'class' => Author::class,
-                'choice_label' => 'firstName',
+                'choice_label' => function (Author $author) {
+                    return $author->getFullName(); // Affiche le nom complet
+                },
+                'placeholder' => 'Sélectionner un auteur',
             ])
         ;
     }
