@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Form\BookType;
+use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,13 +15,22 @@ use Symfony\Component\HttpFoundation\Request;
 #[Route('/book', name: 'book_')]
 class BookController extends AbstractController
 {
+    #[Route('/all', name: 'all')]
+    public function all(BookRepository $bookRepo): Response
+    {
+        $books = $bookRepo->findAll();
+        return $this->render('book/all.html.twig', [
+            'books' => $books
+        ]);
+    }
+
     #[Route('/new', name: 'new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
-        // if(!$this->getUser())
-        // {
-        //     return $this->redirectToRoute('author_all');
-        // }
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('author_all');
+        }
 
         $book = new Book;
         $bookForm = $this->createForm(BookType::class, $book);
