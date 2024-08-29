@@ -3,6 +3,7 @@
 {% block title %}Mon profil{% endblock %}
 
 {% block body %}
+{% if app.user %}
     <h1>User</h1>
 
     <table class="table">
@@ -39,11 +40,14 @@
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ author.id) }}">
                     <button class="btn">Supprimer</button>
                 </form>
-            </div>
+                </div>
                 
+            
         {% endfor %}
+        <button><a href="{{path('author_new')}}">Ajouter un auteur</a></button>
     </div>
-    
-
+{% else %}
+    Veuillez vous connecter
+{% endif %}
     
 {% endblock %}

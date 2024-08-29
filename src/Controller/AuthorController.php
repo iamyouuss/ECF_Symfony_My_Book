@@ -18,8 +18,33 @@ class AuthorController extends AbstractController
     public function all(AuthorRepository $authorRepo): Response
     {
         $authors = $authorRepo->findAll();
-        return $this->render('author/index.html.twig', [
+        return $this->render('author/all.html.twig', [
             'authors' => $authors
+        ]);
+    }
+
+    #[Route('/new', name: 'new')]
+    public function new(Request $request, EntityManagerInterface $em): Response
+    {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('author_all');
+        }
+        
+        $author = new Author;
+        $authorNew = $this->createForm(AuthorType::class, $author);
+        $authorNew->handleRequest($request);
+        if($authorNew->isSubmitted() && $authorNew->isValid()){
+            $author->setUser($this->getUser());
+            $em->persist($author);
+            $em->flush();
+            return $this->redirectToRoute('user_show', [
+                'id' => $this->getUser()->getId()
+            ]);
+        }
+        return $this->render('author/edit.html.twig', [
+            'form' => $authorNew,
+            'title' => 'Nouvel auteur'
         ]);
     }
 
@@ -41,7 +66,8 @@ class AuthorController extends AbstractController
             ]);
         }
         return $this->render('author/edit.html.twig', [
-            'form' => $authorForm
+            'form' => $authorForm,
+            'title' => 'Modifier auteur'
         ]);
     }
 
