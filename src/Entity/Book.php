@@ -84,7 +84,8 @@ class Book
         return $this->author;
     }
 
-    public function __contruct(){
+    public function __construct()
+    {
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
     }

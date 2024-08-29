@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Author;
 use App\Entity\Book;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Doctrine\DBAL\Types\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

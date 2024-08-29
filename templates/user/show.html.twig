@@ -41,10 +41,27 @@
                     <button class="btn">Supprimer</button>
                 </form>
                 </div>
+        {% endfor %}
+        <button><a href="{{path('author_new')}}">Ajouter un auteur</a></button>
+
+        <h4>Mes livres</h4>
+
+        {% for book in myBooks %}
+            <div style="display:flex; align-items: center;">
+                <p>{{book.title}} | {{book.author.firstName}} {{book.author.lastName}}</p>
+                <button><a href="{{ path('book_edit', {'id': book.id}) }}"> Modifier
+                </a></button>
+
+                <form method="post" action="{{ path('book_delete', {'id': book.id}) }}" onsubmit="return confirm('Are you sure you want to delete this book?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
+                    <button class="btn">Supprimer</button>
+                </form>
+                </div>
                 
             
         {% endfor %}
-        <button><a href="{{path('author_new')}}">Ajouter un auteur</a></button>
+        
+        <button><a href="{{path('book_new')}}">Ajouter un livre</a></button>
     </div>
 {% else %}
     Veuillez vous connecter
